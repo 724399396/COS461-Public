@@ -11,8 +11,18 @@ RECV_BUFFER_SIZE = 2048
 QUEUE_LENGTH = 10
 
 def server(server_port):
-    """TODO: Listen on socket and print received message to sys.stdout"""
-    pass
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('', server_port))
+    s.listen(QUEUE_LENGTH)
+    while 1:
+        conn, addr = s.accept()
+        while 1:
+            data = conn.recv(RECV_BUFFER_SIZE)
+            if not data: 
+                break
+            sys.stdout.write(data)
+            sys.stdout.flush()
+        conn.close()
 
 
 def main():
